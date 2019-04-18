@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="H1QWNW" name="ApresMidi" projectType="audioplug" jucerVersion="5.3.2"
+              pluginCharacteristicsValue="pluginProducesMidiOut">
+  <MAINGROUP id="fhAP8h" name="ApresMidi">
+    <GROUP id="{5FFDE59E-AEAC-CC39-80A4-6A405E893FE1}" name="Source">
+      <FILE id="v454Oh" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="kxd3es" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="BoMfui" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="oz3Ml6" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+    </GROUP>
+    <FILE id="LaR3O8" name="midipats.h" compile="0" resource="0" file="Source/midipats.h"/>
+  </MAINGROUP>
+  <EXPORTFORMATS>
+    <VS2017 targetFolder="Builds/VisualStudio2017">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" headerPath="..\..\custom_modules\Eigen"/>
+        <CONFIGURATION isDebug="0" name="Release"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="../../From_git/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../From_git/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../From_git/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../From_git/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../From_git/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../From_git/JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="../../From_git/JUCE/modules"/>
+        <MODULEPATH id="juce_video" path="../../From_git/JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="../../From_git/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../../From_git/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../From_git/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../From_git/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../From_git/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../From_git/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../From_git/JUCE/modules"/>
+      </MODULEPATHS>
+    </VS2017>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="0"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_video" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+  </MODULES>
+  <LIVE_SETTINGS>
+    <WINDOWS/>
+  </LIVE_SETTINGS>
+  <JUCEOPTIONS/>
+</JUCERPROJECT>
