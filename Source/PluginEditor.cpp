@@ -27,23 +27,6 @@ ApresMidiAudioProcessorEditor::ApresMidiAudioProcessorEditor(ApresMidiAudioProce
 	addAndMakeVisible(fileComp.get());
 	fileComp->addListener(this);
 
-	/*
-	//addAndMakeVisible(order_slider);
-	order_slider.setValue(processor.m1.next_order);
-	order_slider.setRange(1, 10, 1);
-	order_slider.onValueChange = [this] {processor.m1.next_order = order_slider.getValue(); };
-	order_slider.setBounds(10, 70, 200, 20);
-	setSize(400, 300);
-
-	order_text.setBounds(10,70,200,20);
-	order_text.setText((String)processor.m1.order);
-	order_text.onTextChange = [this]
-	{
-		processor.m1.next_order = atoi((char *) order_text.getText());
-	};
-	addAndMakeVisible(order_text);
-	*/
-
 	order_label.setBounds(200, 50, 200, 20);
 	order_label.setText(" (default is 2)", juce::NotificationType::sendNotification);
 	order_label.setEditable(1, false, 1);
