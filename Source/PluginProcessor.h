@@ -11,7 +11,6 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "../../Eigen_lib/Eigen/Sparse" 
 #include "midipats.h"
 
 //==============================================================================

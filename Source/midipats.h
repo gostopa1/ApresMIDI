@@ -11,7 +11,7 @@
 #pragma once
 #include <ctime>
 #include <fstream>
-#include "../../Eigen_lib/Eigen/Sparse"
+#include "Eigen/Sparse"
 
 using Eigen::MatrixXf;
 using Eigen::VectorXf;
