@@ -146,24 +146,20 @@ void ApresMidiAudioProcessor::processBlock(AudioBuffer<float>& buffer, MidiBuffe
 	// this code if your algorithm always overwrites all the output channels.
 	for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
 		buffer.clear(i, 0, buffer.getNumSamples());
+    
+    AudioPlayHead::CurrentPositionInfo head_info;
+    //AudioPlayHead *  cur_play_head =   getPlayHead ();
+    //cur_play_head->getCurrentPosition(head_info);
+    getPlayHead()->getCurrentPosition(head_info);
+    if (head_info.isPlaying)
+        
+    {
 
-	// This is the place where you'd normally do the guts of your plugin's
-	// audio processing...
-	// Make sure to reset the state if your inner loop is processing
-	// the samples and the outer loop is handling the channels.
-	// Alternatively, you can process the samples with the channels
-	// interleaved by keeping the same state.
-	for (int channel = 0; channel < totalNumInputChannels; ++channel)
-	{
-		auto* channelData = buffer.getWritePointer(channel);
-
-		// ..do something to the data...	
-	}
 	for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
 	{
 		if (m1.is_ready)
 		{
-			int velocity = 90;
+			
 			float offset = 100.0f;
 			
 			//if ((timer++) > ((int)(gap/m1.durations[m1.cur_pattern])))
@@ -190,6 +186,7 @@ void ApresMidiAudioProcessor::processBlock(AudioBuffer<float>& buffer, MidiBuffe
 
 		}
 	}
+    }
 }
 
 //==============================================================================
