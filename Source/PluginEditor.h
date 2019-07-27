@@ -28,14 +28,10 @@ public:
     void resized() override;
 	
 	Slider speed_slider;
-	Slider order_slider;
     
     TextButton loadButton;
-    
 	TextEditor order_text;
 	Label order_label;
-
-
 	Label trackno_label;
 	Label warning_label;
 	
