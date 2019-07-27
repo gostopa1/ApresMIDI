@@ -16,7 +16,8 @@
 //==============================================================================
 /**
 */
-class ApresMidiAudioProcessorEditor  : public AudioProcessorEditor, public FilenameComponentListener, public Slider::Listener
+class ApresMidiAudioProcessorEditor  :   public AudioProcessorEditor,
+                                        public Slider::Listener, public Button::Listener
 {
 public:
     ApresMidiAudioProcessorEditor (ApresMidiAudioProcessor&);
@@ -28,29 +29,21 @@ public:
 	
 	Slider speed_slider;
 	Slider order_slider;
+    
+    TextButton loadButton;
+    
 	TextEditor order_text;
 	Label order_label;
+
 
 	Label trackno_label;
 	Label warning_label;
 	
-	void filenameComponentChanged(FilenameComponent* fileComponentThatHasChanged) override
-	{
-		if (fileComponentThatHasChanged == fileComp.get())
-		{
-			processor.m1.is_ready = 0;
-			processor.m1.reset();
-			processor.m1.read_midi_file((const char *)(fileComp->getCurrentFileText()).toUTF8());
-			processor.m1.is_ready = 1;
-		}
-	}
-	void sliderValueChanged(Slider* slider) override {};
-
 private:
-
-    // This reference is provided as a quick way for your editor to
-    // access the processor object that created it.
-	std::unique_ptr<FilenameComponent> fileComp;
+    void sliderValueChanged(Slider* slider) override {};
+    virtual void buttonClicked(Button* button) override;
+    void loadButtonClicked();
+    
 	ApresMidiAudioProcessor& processor;
 
 
