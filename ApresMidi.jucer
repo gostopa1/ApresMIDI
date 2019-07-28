@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="H1QWNW" name="ApresMidi" projectType="audioplug" jucerVersion="5.4.3"
-              pluginCharacteristicsValue="pluginProducesMidiOut" pluginFormats="buildStandalone,buildVST3"
+              pluginCharacteristicsValue="pluginProducesMidiOut" pluginFormats="buildVST3"
               pluginManufacturer="Athanasios Gotsopoulos">
   <MAINGROUP id="fhAP8h" name="ApresMidi">
     <GROUP id="{5FFDE59E-AEAC-CC39-80A4-6A405E893FE1}" name="Source">

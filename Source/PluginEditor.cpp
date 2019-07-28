@@ -41,6 +41,7 @@ ApresMidiAudioProcessorEditor::ApresMidiAudioProcessorEditor(ApresMidiAudioProce
 		processor.m1.trackno = (int)temp.getValue();
         trackno_label.setText( temp.toString(),juce::NotificationType::sendNotification);
         //trackno_label.setText( (String) temp.getValue().toString(),juce::NotificationType::sendNotification);
+        warning_label.setText(temp.getValue().toString(), juce::NotificationType::dontSendNotification);
 	};
 	addAndMakeVisible(trackno_label);
 
