@@ -177,13 +177,8 @@ void ApresMidiAudioProcessor::processBlock(AudioBuffer<float>& buffer, MidiBuffe
 					midiMessages.addEvent(MidiMessage::noteOn(1, m1.unique_patterns[m1.cur_pattern][notei], (uint8)m1.velocity), offset);
 				}
 				timer = 0;
-
 			}
-
 			gap = m1.duration * m1.speed;
-
-
-
 		}
 	}
     }
