@@ -85,6 +85,23 @@ public:
 		srand(time(NULL));
 		list_size = (rand() % 9) + 1;
 		durations.resize(list_size);
+        
+        notenums.clear();
+        timestamps.clear();
+        velocities.clear();
+        onoffs.clear();
+        alldurations.clear();
+        allvelocities.clear();
+        patterns.clear();
+        unique_patterns.clear();
+        unique_durations.clear();
+        pattern_ids.clear();
+        pre_transitions.clear();
+        post_durations.clear();
+        post_velocities.clear();
+        post_transitions.clear();
+        
+
 	}
 	
 	void choose_next_pattern()
@@ -203,7 +220,6 @@ public:
 
 		DBG("Done reading MIDI File" + (String)onoffs.size());
 		write_events_to_file();
-		//patterns.empty();
 		
 		alldurations.clear(); // To remove any contents that might be generated from the random patterns earlier
 		durations.clear(); // To remove any contents that might be generated from the random patterns earlier
