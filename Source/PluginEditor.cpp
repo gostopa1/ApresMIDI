@@ -23,8 +23,8 @@ ApresMidiAudioProcessorEditor::ApresMidiAudioProcessorEditor(ApresMidiAudioProce
 	// editor's size to whatever you need it to be.
    
 	order_label.setBounds(200, 50, 200, 20);
-	order_label.setText(" (default is 2)", juce::NotificationType::sendNotification);
-	order_label.setEditable(1, false, 1);
+	order_label.setText(" (default is 2 ho)", juce::NotificationType::sendNotification);
+	order_label.setEditable(1, false, 0);
 	order_label.onTextChange = [this]
 	{
 		auto temp = order_label.getTextValue();
@@ -34,7 +34,7 @@ ApresMidiAudioProcessorEditor::ApresMidiAudioProcessorEditor(ApresMidiAudioProce
 
 	trackno_label.setBounds(200, 70, 200, 20);
 	trackno_label.setText(" (default is -1 = the largest)", juce::NotificationType::sendNotification);
-	trackno_label.setEditable(1, false, 1);
+	trackno_label.setEditable(1, false, 0);
 	trackno_label.onTextChange = [this]
 	{
 		auto temp = trackno_label.getTextValue();

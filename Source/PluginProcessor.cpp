@@ -147,12 +147,19 @@ void ApresMidiAudioProcessor::processBlock(AudioBuffer<float>& buffer, MidiBuffe
 	for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
 		buffer.clear(i, 0, buffer.getNumSamples());
     
-    AudioPlayHead::CurrentPositionInfo head_info;
+    
     //AudioPlayHead *  cur_play_head =   getPlayHead ();
     //cur_play_head->getCurrentPosition(head_info);
+    
+    //JUCEApplication::isStandaloneApp()
+    
+    /**/
+    // Uncomment next 3 lines to work with play button
+    AudioPlayHead::CurrentPositionInfo head_info;
     getPlayHead()->getCurrentPosition(head_info);
+     
     if (head_info.isPlaying)
-        
+    
     {
 
 	for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
