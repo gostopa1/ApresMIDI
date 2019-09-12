@@ -14,6 +14,7 @@
       <FILE id="oz3Ml6" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
     </GROUP>
     <FILE id="LaR3O8" name="midipats.h" compile="0" resource="0" file="Source/midipats.h"/>
+    <FILE id="g4U6v3" name="midipats.cpp" compile="1" resource="0" file="Source/midipats.cpp"/>
   </MAINGROUP>
   <EXPORTFORMATS>
     <VS2017 targetFolder="Builds/VisualStudio2017">
