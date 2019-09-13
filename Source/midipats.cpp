@@ -25,12 +25,8 @@ void midi_core::initialize()
     is_ready = 0;
     order = next_order;
     state_buffer.resize(order);
-    srand(time(NULL));
+    srand(uint(time(NULL))); // Explicit conversion to avoid the warning
     list_size = (rand() % 9) + 1;
-    //make_patterns();
-    //durations.resize(list_size);
-    //make_durations();
-    
 }
 
 void midi_core::reset()
@@ -39,7 +35,7 @@ void midi_core::reset()
     previous_pattern = 0;
     cur_pattern = 0;
     state_buffer.resize(order);
-    srand(time(NULL));
+    srand(uint(time(NULL))); // Explicit conversion to avoid the warning
     list_size = (rand() % 9) + 1;
     durations.resize(list_size);
     
@@ -57,8 +53,6 @@ void midi_core::reset()
     post_durations.clear();
     post_velocities.clear();
     post_transitions.clear();
-    
-    
 }
 
 void midi_core::choose_next_pattern()
@@ -210,10 +204,10 @@ void midi_core::read_midi_file(const char * filename)
     //print_patterns_to_file();
     
     //patterns = allpatterns;
-    list_size = patterns.size();
+    list_size = int(patterns.size());
     
     durations = alldurations;
-    DBG("Done reading MIDI File");
+    //DBG("Done analyzing MIDI File");
     
     find_unique_patterns();
     
@@ -283,10 +277,11 @@ void midi_core::print_patterns_to_file()
 
 void midi_core::find_unique_patterns()
 {
+    //DBG("Now I will check patterns");
     
-    number_of_patterns = patterns.size();
+    number_of_patterns = int(patterns.size());
     pattern_ids.resize(number_of_patterns);
-    DBG("Now I will check patterns");
+    
     int patnum = 0;
     // Assign IDs to patterns and find duplicates
     unique_patterns.clear();

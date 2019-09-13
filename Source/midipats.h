@@ -15,7 +15,7 @@
 
 class midi_core
 {
-public:
+public: 
 	int speed = 200;
 	std::vector<std::vector<int>> unique_patterns;
 	std::vector<std::vector<int>> unique_durations;
