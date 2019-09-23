@@ -56,8 +56,9 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
 	int timer = 0;
+    int gap = 44100 / 8;
 	midi_core m1;
-	int gap = 44100 / 8;
+	
 
 private:
     //==============================================================================
