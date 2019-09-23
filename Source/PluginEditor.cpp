@@ -15,12 +15,13 @@
 ApresMidiAudioProcessorEditor::ApresMidiAudioProcessorEditor(ApresMidiAudioProcessor& p)
 	: AudioProcessorEditor(&p), processor(p)
 {
+    allComps.emplace_back(new PianoRoll(&processor));
+    allComps.emplace_back(new GenerateMarkov(&processor));
+    
     addAndMakeVisible(loadButton);
     loadButton.setButtonText("LOAD MIDI FILE");
     loadButton.addListener(this);
     loadButton.setBounds(10, 10, 200, 20);
-
-	// editor's size to whatever you need it to be.
    
 	order_label.setBounds(200, 50, 200, 20);
 	order_label.setText(" (default is 2 ho)", juce::NotificationType::sendNotification);
@@ -40,7 +41,6 @@ ApresMidiAudioProcessorEditor::ApresMidiAudioProcessorEditor(ApresMidiAudioProce
 		auto temp = trackno_label.getTextValue();
 		processor.m1.trackno = (int)temp.getValue();
         trackno_label.setText( temp.toString(),juce::NotificationType::sendNotification);
-        //trackno_label.setText( (String) temp.getValue().toString(),juce::NotificationType::sendNotification);
         warning_label.setText(temp.getValue().toString(), juce::NotificationType::dontSendNotification);
 	};
 	addAndMakeVisible(trackno_label);
@@ -54,12 +54,21 @@ ApresMidiAudioProcessorEditor::ApresMidiAudioProcessorEditor(ApresMidiAudioProce
 	addAndMakeVisible(warning_label);
 	warning_label.setBounds(10, 200, 380, 10);
 	warning_label.setJustificationType(juce::Justification::left);
-
+    
+    // Add component for piano roll
+    addAndMakeVisible(*allComps[0]);
+    allComps[0]->setBounds(10,200,200,100);
+    
+    // Add component for Generating the transition matrices etc.
+    addAndMakeVisible(*allComps[1]);
+    allComps[1]->setBounds(10,400,200,100);
+    
 	setSize(500, 500);
 }
 
 ApresMidiAudioProcessorEditor::~ApresMidiAudioProcessorEditor()
 {
+    
 }
 
 //==============================================================================
@@ -73,7 +82,6 @@ void ApresMidiAudioProcessorEditor::paint(Graphics& g)
 	
 	g.drawFittedText("Order (of the next MIDI)", 10, 50, 200, 20, Justification::left, 1);
 	g.drawFittedText("Track (of the next MIDI)", 10, 70, 200, 20, Justification::left, 1);
-
 	g.drawFittedText("Duration Multiplier (Inverse Speed)", 10, 130, 200, 20, Justification::left, 1);
 
 	if (processor.m1.problematic_track==1)

@@ -16,13 +16,58 @@
 //==============================================================================
 /**
 */
-class ApresMidiAudioProcessorEditor  :   public AudioProcessorEditor,
-                                        public Slider::Listener, public Button::Listener
+
+class PianoRoll : public Component
 {
 public:
+    Slider speed_slider;
+    PianoRoll(ApresMidiAudioProcessor * proc)
+    {
+        processor = proc;
+    }
+    
+    void paint (Graphics& g) override
+    {
+        
+        g.fillAll(Colours::lightskyblue);
+        addAndMakeVisible(speed_slider);
+        speed_slider.setBounds(0,0,getWidth(),getHeight());
+    };
+private:
+    ApresMidiAudioProcessor* processor;
+
+};
+
+
+class GenerateMarkov : public Component
+{
+public:
+    Slider speed_slider;
+    GenerateMarkov(ApresMidiAudioProcessor * proc)
+    {
+        processor = proc;
+    }
+    
+    void paint (Graphics& g) override
+    {
+        g.fillAll(Colours::darkkhaki);
+        addAndMakeVisible(speed_slider);
+        speed_slider.setBounds(0,0,getWidth(),getHeight());
+    };
+    
+private:
+        ApresMidiAudioProcessor* processor;
+};
+
+
+class ApresMidiAudioProcessorEditor  :   public AudioProcessorEditor, public Slider::Listener, public Button::Listener
+{
+public:
+    
     ApresMidiAudioProcessorEditor (ApresMidiAudioProcessor&);
     ~ApresMidiAudioProcessorEditor();
 
+    
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
@@ -41,7 +86,10 @@ private:
     void loadButtonClicked();
     
 	ApresMidiAudioProcessor& processor;
-
+    
+    // Here we store all the Child Components, which will also handle all the smaller elements
+    std::vector<std::unique_ptr<Component>> allComps;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ApresMidiAudioProcessorEditor)
 };
+
