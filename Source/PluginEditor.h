@@ -28,7 +28,6 @@ public:
     
     void paint (Graphics& g) override
     {
-        
         g.fillAll(Colours::lightskyblue);
         addAndMakeVisible(speed_slider);
         speed_slider.setBounds(0,0,getWidth(),getHeight());
@@ -60,6 +59,36 @@ private:
 };
 
 
+class PlayingComponent : public Component
+{
+public:
+    Slider speed_slider;
+    PlayingComponent(ApresMidiAudioProcessor * proc)
+    {
+        processor = proc;
+        addAndMakeVisible(speed_slider);
+        speed_slider.setRange(1, 1000, 1);
+        speed_slider.setValue(processor->m1.speed);
+        speed_slider.onValueChange = [this] {processor->m1.speed = speed_slider.getValue(); };
+    }
+    
+    void paint (Graphics& g) override
+    {
+        g.setColour(Colours::white);
+        g.setFont(15.0f);
+        g.fillAll(Colours::darkblue);
+        
+        
+        g.drawFittedText("Duration Multiplier (Inverse Speed)", 0, 0.25*getHeight(), getWidth(), getHeight()*0.25, Justification::left, 1);
+        
+        speed_slider.setBounds(0,0.5*getHeight(),getWidth(),0.25*getHeight());
+    };
+    
+private:
+    ApresMidiAudioProcessor* processor;
+};
+
+
 class ApresMidiAudioProcessorEditor  :   public AudioProcessorEditor, public Slider::Listener, public Button::Listener
 {
 public:
@@ -71,8 +100,6 @@ public:
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
-	
-	Slider speed_slider;
     
     TextButton loadButton;
 	TextEditor order_text;

@@ -17,6 +17,7 @@ ApresMidiAudioProcessorEditor::ApresMidiAudioProcessorEditor(ApresMidiAudioProce
 {
     allComps.emplace_back(new PianoRoll(&processor));
     allComps.emplace_back(new GenerateMarkov(&processor));
+    allComps.emplace_back(new PlayingComponent(&processor));
     
     addAndMakeVisible(loadButton);
     loadButton.setButtonText("LOAD MIDI FILE");
@@ -45,12 +46,6 @@ ApresMidiAudioProcessorEditor::ApresMidiAudioProcessorEditor(ApresMidiAudioProce
 	};
 	addAndMakeVisible(trackno_label);
 
-	addAndMakeVisible(speed_slider);
-	speed_slider.setRange(1, 1000, 1);
-	speed_slider.setValue(processor.m1.speed);
-	speed_slider.onValueChange = [this] {processor.m1.speed = speed_slider.getValue(); };
-	speed_slider.setBounds(10, 150, 200, 20);
-
 	addAndMakeVisible(warning_label);
 	warning_label.setBounds(10, 200, 380, 10);
 	warning_label.setJustificationType(juce::Justification::left);
@@ -61,7 +56,10 @@ ApresMidiAudioProcessorEditor::ApresMidiAudioProcessorEditor(ApresMidiAudioProce
     
     // Add component for Generating the transition matrices etc.
     addAndMakeVisible(*allComps[1]);
-    allComps[1]->setBounds(10,400,200,100);
+    allComps[1]->setBounds(10,300,200,100);
+    
+    addAndMakeVisible(*allComps[2]);
+    allComps[2]->setBounds(10,400,200,100);
     
 	setSize(500, 500);
 }
@@ -82,7 +80,6 @@ void ApresMidiAudioProcessorEditor::paint(Graphics& g)
 	
 	g.drawFittedText("Order (of the next MIDI)", 10, 50, 200, 20, Justification::left, 1);
 	g.drawFittedText("Track (of the next MIDI)", 10, 70, 200, 20, Justification::left, 1);
-	g.drawFittedText("Duration Multiplier (Inverse Speed)", 10, 130, 200, 20, Justification::left, 1);
 
 	if (processor.m1.problematic_track==1)
 	{
@@ -95,7 +92,6 @@ void ApresMidiAudioProcessorEditor::paint(Graphics& g)
 		trackno_label.setColour(trackno_label.outlineColourId, juce::Colours::blue);
 		warning_label.setText("MIDI loaded fine", juce::NotificationType::dontSendNotification);
 	}
-    
 }
 void ApresMidiAudioProcessorEditor::buttonClicked(Button* button)
 {
