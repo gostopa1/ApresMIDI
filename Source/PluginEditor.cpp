@@ -18,13 +18,16 @@ ApresMidiAudioProcessorEditor::ApresMidiAudioProcessorEditor(ApresMidiAudioProce
     allComps.emplace_back(new PianoRoll(&processor));
     allComps.emplace_back(new GenerateMarkov(&processor));
     allComps.emplace_back(new PlayingComponent(&processor));
+    allComps.emplace_back(new FileComp(&processor));
+    allComps.emplace_back(new Analyzer(&processor));
+    
     
     addAndMakeVisible(loadButton);
-    loadButton.setButtonText("LOAD MIDI FILE");
+    loadButton.setButtonText("Load MIDI File");
     loadButton.addListener(this);
     loadButton.setBounds(10, 10, 200, 20);
-   
-	order_label.setBounds(200, 50, 200, 20);
+    
+	order_label.setBounds(200, 150, 200, 20);
 	order_label.setText(" (default is 2 ho)", juce::NotificationType::sendNotification);
 	order_label.setEditable(1, false, 0);
 	order_label.onTextChange = [this]
@@ -34,7 +37,7 @@ ApresMidiAudioProcessorEditor::ApresMidiAudioProcessorEditor(ApresMidiAudioProce
 	};
 	addAndMakeVisible(order_label);
 
-	trackno_label.setBounds(200, 70, 200, 20);
+	trackno_label.setBounds(200, 170, 200, 20);
 	trackno_label.setText(" (default is -1 = the largest)", juce::NotificationType::sendNotification);
 	trackno_label.setEditable(1, false, 0);
 	trackno_label.onTextChange = [this]
@@ -52,14 +55,20 @@ ApresMidiAudioProcessorEditor::ApresMidiAudioProcessorEditor(ApresMidiAudioProce
     
     // Add component for piano roll
     addAndMakeVisible(*allComps[0]);
-    allComps[0]->setBounds(10,200,200,100);
+    allComps[0]->setBounds(250,200,200,100);
     
     // Add component for Generating the transition matrices etc.
     addAndMakeVisible(*allComps[1]);
-    allComps[1]->setBounds(10,300,200,100);
+    allComps[1]->setBounds(250,300,200,100);
     
     addAndMakeVisible(*allComps[2]);
-    allComps[2]->setBounds(10,400,200,100);
+    allComps[2]->setBounds(250,400,200,100);
+    
+    //addAndMakeVisible(*allComps[3]);
+    //allComps[3]->setBounds(0,100,200,100);
+    
+    addAndMakeVisible(*allComps[4]);
+    allComps[4]->setBounds(0,100,200,199);
     
 	setSize(500, 500);
 }
@@ -78,8 +87,8 @@ void ApresMidiAudioProcessorEditor::paint(Graphics& g)
 	g.setColour(Colours::white);
 	g.setFont(15.0f);
 	
-	g.drawFittedText("Order (of the next MIDI)", 10, 50, 200, 20, Justification::left, 1);
-	g.drawFittedText("Track (of the next MIDI)", 10, 70, 200, 20, Justification::left, 1);
+	g.drawFittedText("Order (of the next MIDI)", 10, 150, 200, 20, Justification::left, 1);
+	g.drawFittedText("Track (of the next MIDI)", 10, 170, 200, 20, Justification::left, 1);
 
 	if (processor.m1.problematic_track==1)
 	{
