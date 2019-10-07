@@ -75,8 +75,6 @@ ApresMidiAudioProcessorEditor::ApresMidiAudioProcessorEditor(ApresMidiAudioProce
     order_menu.setBounds(220,100,200,30);
     order_menu.onChange=[this]
     {
-        
-        //DBG((String)order_menu.getSelectedIdAsValue());
         DBG((String)order_menu.getSelectedId());
         processor.m1.order=order_menu.getSelectedId();
     };

@@ -91,14 +91,13 @@ void midi_core::choose_next_pattern()
 
 void midi_core::analyze_file(const char * filename)
 {
-    
     // Opening the MIDI file
     myFile=File(filename);
     DBG(filename);
     FileInputStream myStream(myFile);
     
     myMIDIFile.readFrom(myStream);
-    
+    //myMIDIFile.convertTimestampTicksToSeconds();
     // Checking if our selection of track is possible, i.e. the MIDI file has enough tracks and the track has enough events to model
     int max_events = 0; // Here we accumulate the number of note on events
     track_with_max_events = 0;
@@ -134,6 +133,7 @@ void midi_core::analyze_file(const char * filename)
 }
 void midi_core::analyze_track()
 {
+    
     track_number_ok = 0;
     
     if (trackno >= 0)

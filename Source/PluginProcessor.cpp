@@ -147,43 +147,47 @@ void ApresMidiAudioProcessor::processBlock(AudioBuffer<float>& buffer, MidiBuffe
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear(i, 0, buffer.getNumSamples());
     
-
-    // Uncomment next 3 lines to work with play button
-    AudioPlayHead::CurrentPositionInfo head_info;
-    getPlayHead()->getCurrentPosition(head_info);
-    
-    if (head_info.isPlaying)
-        
+    if(JUCEApplication::isStandaloneApp())
     {
-        for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
+        
+    }
+    else
+    {
+        // Uncomment next 3 lines to work with play button
+        AudioPlayHead::CurrentPositionInfo head_info;
+        getPlayHead()->getCurrentPosition(head_info);
+        
+        if (head_info.isPlaying)
+            
         {
-            if (m1.is_ready)
+            for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
             {
-                
-                float offset = 100.0f;
-                
-                //if ((timer++) > ((int)(gap/m1.durations[m1.cur_pattern])))
-                
-                if ((timer++) > ((int)gap))
+                if (m1.is_ready)
                 {
-                    m1.choose_next_pattern();
                     
-                    for (int notei = 0; notei < m1.unique_patterns[m1.previous_pattern].size(); ++notei)
+                    float offset = 100.0f;
+                    
+                    //if ((timer++) > ((int)(gap/m1.durations[m1.cur_pattern])))
+                    
+                    if ((timer++) > ((int)gap))
                     {
-                        midiMessages.addEvent(MidiMessage::noteOff(1, m1.unique_patterns[m1.previous_pattern][notei], (uint8)0), offset);
+                        m1.choose_next_pattern();
+                        
+                        for (int notei = 0; notei < m1.unique_patterns[m1.previous_pattern].size(); ++notei)
+                        {
+                            midiMessages.addEvent(MidiMessage::noteOff(1, m1.unique_patterns[m1.previous_pattern][notei], (uint8)0), offset);
+                        }
+                        for (int notei = 0; notei < m1.unique_patterns[m1.cur_pattern].size(); ++notei)
+                        {
+                            midiMessages.addEvent(MidiMessage::noteOn(1, m1.unique_patterns[m1.cur_pattern][notei], (uint8)m1.velocity), offset);
+                        }
+                        timer = 0;
                     }
-                    for (int notei = 0; notei < m1.unique_patterns[m1.cur_pattern].size(); ++notei)
-                    {
-                        midiMessages.addEvent(MidiMessage::noteOn(1, m1.unique_patterns[m1.cur_pattern][notei], (uint8)m1.velocity), offset);
-                    }
-                    timer = 0;
+                    gap = m1.duration * m1.speed;
                 }
-                gap = m1.duration * m1.speed;
             }
         }
     }
-
-
 }
 
 //==============================================================================

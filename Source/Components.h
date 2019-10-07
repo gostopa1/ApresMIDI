@@ -161,7 +161,7 @@ public:
     {
         processor = proc;
         addAndMakeVisible(speed_slider);
-        speed_slider.setRange(1, 1000, 1);
+        speed_slider.setRange(1, 200, 1);
         speed_slider.setValue(processor->m1.speed);
         speed_slider.onValueChange = [this] {processor->m1.speed = speed_slider.getValue(); };
         addAndMakeVisible(speed_slider);
