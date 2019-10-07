@@ -89,20 +89,20 @@ void midi_core::choose_next_pattern()
     
 }
 
-void midi_core::read_midi_file(const char * filename)
+void midi_core::analyze_file(const char * filename)
 {
     
     // Opening the MIDI file
-    File myFile(filename);
-    //DBG(filename);
+    myFile=File(filename);
+    DBG(filename);
     FileInputStream myStream(myFile);
-    MidiFile myMIDIFile;
+    
     myMIDIFile.readFrom(myStream);
     
     // Checking if our selection of track is possible, i.e. the MIDI file has enough tracks and the track has enough events to model
     int max_events = 0; // Here we accumulate the number of note on events
-    int track_with_max_events = 0;
-    std::vector<int> notes_per_track; // This
+    track_with_max_events = 0;
+    notes_per_track.clear();
     for (int tracki = 0; tracki < myMIDIFile.getNumTracks(); ++tracki)
     {
         const MidiMessageSequence & tempstream = *(myMIDIFile.getTrack(tracki));
@@ -121,9 +121,20 @@ void midi_core::read_midi_file(const char * filename)
         {
             track_with_max_events = tracki;
         }
-        notes_per_track.insert(notes_per_track.end(), 1, temp);
+        notes_per_track.push_back(temp);
     }
-    int track_number_ok = 0;
+    
+    
+    print_summary();
+    DBG("Printing a summary of notes in each track");
+    for (int notei=0;notei<notes_per_track.size();++notei)
+    {
+        DBG("Track "+(String)notei+" has "+(String)notes_per_track[notei]);
+    }
+}
+void midi_core::analyze_track()
+{
+    track_number_ok = 0;
     
     if (trackno >= 0)
     {
@@ -135,6 +146,7 @@ void midi_core::read_midi_file(const char * filename)
             }
         }
     }
+    
     int track_to_load = track_with_max_events;
     if (track_number_ok==0)
     {
@@ -148,7 +160,6 @@ void midi_core::read_midi_file(const char * filename)
     
     const MidiMessageSequence & mystream = *(myMIDIFile.getTrack(track_to_load));
     int noevents = mystream.getNumEvents();
-    
     
     // Get all the note numbers, timestamps, velocities and onoffs (whether it is a note-on or note-off) for each note-on note-off event.
     for (int eventi = 0; eventi < noevents; ++eventi)
@@ -170,7 +181,7 @@ void midi_core::read_midi_file(const char * filename)
         }
     }
     
-    //DBG("Done reading MIDI File" + (String)onoffs.size());
+    DBG("Done reading MIDI File" + (String)onoffs.size());
     //write_events_to_file();
     
     alldurations.clear(); // To remove any contents that might be generated from the random patterns earlier
@@ -199,8 +210,8 @@ void midi_core::read_midi_file(const char * filename)
     };
     alldurations.insert(alldurations.end(), 1, timestamps[onoffs.size() - 1] - curtime);
     
-    // DBG("Size of patterms");
-    //DBG(patterns.size());
+    DBG("Size of patterns");
+    DBG(patterns.size());
     //print_patterns_to_file();
     
     //patterns = allpatterns;
@@ -357,9 +368,9 @@ void midi_core::make_transition_matrix()
             
             for (int orderi = 0; orderi < order; ++orderi)
             {
-                DBG(pre_transitions.size());
-                DBG("Counter");
-                DBG(cnt);
+                //DBG(pre_transitions.size());
+                //DBG("Counter");
+                //DBG(cnt);
                 pre_transitions[cnt].insert(pre_transitions[cnt].end(), 1, temp_trans[orderi]);
             }
             post_transitions[cnt].insert(post_transitions[cnt].end(), 1, pattern_ids[pati]);
@@ -375,3 +386,8 @@ void midi_core::make_transition_matrix()
     }
     notrans = cnt;
 }
+
+
+void midi_core::print_summary()
+{
+};

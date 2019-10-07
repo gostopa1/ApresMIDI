@@ -33,6 +33,7 @@ public:
 	std::vector<int> velocities;
 	std::vector<int> onoffs;
 	std::vector<int> timestamps;
+    std::vector<int> notes_per_track;
 
 	std::vector<int> pattern_ids;
 	int list_size = 0;
@@ -48,6 +49,8 @@ public:
 	int duration = 10;
 	int trackno = -1;
 	int problematic_track = 0;
+    int track_with_max_events;
+    int track_number_ok=0;
     
     midi_core();
     ~midi_core();
@@ -55,12 +58,17 @@ public:
     void initialize();
     void reset();
     void choose_next_pattern();
-    void read_midi_file(const char * filename);
+    void analyze_file(const char * filename);
+    void analyze_track();
     void find_unique_patterns();
     void make_transition_matrix();
+    
+    MidiFile myMIDIFile;
 private:
 
+    File myFile;
     void print_patterns_to_file();
     void write_transitions_to_file();
     void write_events_to_file();
+    void print_summary();
 };
