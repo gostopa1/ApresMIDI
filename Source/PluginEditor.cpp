@@ -1,130 +1,113 @@
 /*
-  ==============================================================================
-
-	This file was auto-generated!
-
-	It contains the basic framework code for a JUCE plugin editor.
-
-  ==============================================================================
-*/
+ ==============================================================================
+ 
+ This file was auto-generated!
+ 
+ It contains the basic framework code for a JUCE plugin editor.
+ 
+ ==============================================================================
+ */
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
 //==============================================================================
 ApresMidiAudioProcessorEditor::ApresMidiAudioProcessorEditor(ApresMidiAudioProcessor& p)
-	: AudioProcessorEditor(&p), processor(p)
+: AudioProcessorEditor(&p), processor(p)
 {
-    allComps.emplace_back(new PianoRoll(&processor));
-    allComps.emplace_back(new GenerateMarkov(&processor));
     allComps.emplace_back(new PlayingComponent(&processor));
-    allComps.emplace_back(new FileComp(&processor));
     allComps.emplace_back(new Analyzer(&processor));
-    
     
     addAndMakeVisible(loadButton);
     loadButton.setButtonText("Load MIDI File");
-    loadButton.addListener(this);
-    loadButton.setBounds(10, 10, 200, 20);
+    loadButton.onClick=[this]
+    {
+        FileChooser chooser ("Load a MIDI file",
+                             {},
+                             "*.mid");
+        if (chooser.browseForFileToOpen())
+        {
+            File file = chooser.getResult();
+            
+            //processor.m1.is_ready = 0;
+            //processor.m1.reset();
+            processor.m1.analyze_file((const char *)file.getFullPathName().toUTF8());
+            track_menu.clear();
+            for (int track_i=0;track_i<processor.m1.notes_per_track.size();++track_i)
+            {
+                if (processor.m1.notes_per_track[track_i]>0)
+                {
+                    //track_menu.addItem((String)processor.m1.notes_per_track[track_i], track_i+1);
+                    track_menu.addItem("Track "+(String)track_i+": "+(String)processor.m1.notes_per_track[track_i]+" events", track_i+1);
+                }
+            }
+            //processor.m1.is_ready = 1;
+        }
+        
+    };
+    loadButton.setBounds(10, 10, 200, 30);
     
-	order_label.setBounds(200, 150, 200, 20);
-	order_label.setText(" (default is 2 ho)", juce::NotificationType::sendNotification);
-	order_label.setEditable(1, false, 0);
-	order_label.onTextChange = [this]
-	{
-		auto temp = order_label.getTextValue();
-		processor.m1.next_order = (int)temp.getValue();
-	};
-	addAndMakeVisible(order_label);
-
-	trackno_label.setBounds(200, 170, 200, 20);
-	trackno_label.setText(" (default is -1 = the largest)", juce::NotificationType::sendNotification);
-	trackno_label.setEditable(1, false, 0);
-	trackno_label.onTextChange = [this]
-	{
-		auto temp = trackno_label.getTextValue();
-		processor.m1.trackno = (int)temp.getValue();
-        trackno_label.setText( temp.toString(),juce::NotificationType::sendNotification);
-        warning_label.setText(temp.getValue().toString(), juce::NotificationType::dontSendNotification);
-	};
-	addAndMakeVisible(trackno_label);
-
-	addAndMakeVisible(warning_label);
-	warning_label.setBounds(10, 200, 380, 10);
-	warning_label.setJustificationType(juce::Justification::left);
+    addAndMakeVisible(warning_label);
+    warning_label.setBounds(10, 200, 380, 10);
+    warning_label.setJustificationType(juce::Justification::left);
     
-    // Add component for piano roll
-    addAndMakeVisible(*allComps[0]);
-    allComps[0]->setBounds(250,200,200,100);
+    addAndMakeVisible(*allComps[0]); // Speed slider
+    allComps[0]->setBounds(10,300,200,100);
     
-    // Add component for Generating the transition matrices etc.
     addAndMakeVisible(*allComps[1]);
-    allComps[1]->setBounds(250,300,200,100);
+    allComps[1]->setBounds(10,200,200,30);
     
-    addAndMakeVisible(*allComps[2]);
-    allComps[2]->setBounds(250,400,200,100);
+    addAndMakeVisible(track_menu);
+    track_menu.addItem("Load a midi file first",2);
+    track_menu.setBounds(10,100,200,30);
+    track_menu.onChange=[this]
+    {
+        DBG((String)track_menu.getSelectedId());
+        processor.m1.trackno=(track_menu.getSelectedId()-1);
+    };
     
-    //addAndMakeVisible(*allComps[3]);
-    //allComps[3]->setBounds(0,100,200,100);
     
-    addAndMakeVisible(*allComps[4]);
-    allComps[4]->setBounds(0,100,200,199);
-    
-	setSize(500, 500);
+    addAndMakeVisible(order_menu);
+    for (int order_i=1;order_i<11;++order_i)
+    {
+    order_menu.addItem((String)order_i,order_i);
+    }
+    order_menu.setBounds(220,100,200,30);
+    order_menu.onChange=[this]
+    {
+        
+        //DBG((String)order_menu.getSelectedIdAsValue());
+        DBG((String)order_menu.getSelectedId());
+        processor.m1.order=order_menu.getSelectedId();
+    };
+    setSize(500, 500);
 }
 
 ApresMidiAudioProcessorEditor::~ApresMidiAudioProcessorEditor()
 {
-    
+    /*
+    switch (styleMenu.getSelectedId())
+    {
+    }
+    textLabel.setFont (textFont);
+     */
 }
 
 //==============================================================================
 void ApresMidiAudioProcessorEditor::paint(Graphics& g)
 {
-	// (Our component is opaque, so we must completely fill the background with a solid colour)
-	g.fillAll(getLookAndFeel().findColour(ResizableWindow::backgroundColourId));
-
-	g.setColour(Colours::white);
-	g.setFont(15.0f);
-	
-	g.drawFittedText("Order (of the next MIDI)", 10, 150, 200, 20, Justification::left, 1);
-	g.drawFittedText("Track (of the next MIDI)", 10, 170, 200, 20, Justification::left, 1);
-
-	if (processor.m1.problematic_track==1)
-	{
-		trackno_label.setColour(trackno_label.outlineColourId, juce::Colours::red);
-		
-		warning_label.setText("Problematic track number", juce::NotificationType::dontSendNotification);
-	}
-	else
-	{
-		trackno_label.setColour(trackno_label.outlineColourId, juce::Colours::blue);
-		warning_label.setText("MIDI loaded fine", juce::NotificationType::dontSendNotification);
-	}
+    // (Our component is opaque, so we must completely fill the background with a solid colour)
+    g.fillAll(getLookAndFeel().findColour(ResizableWindow::backgroundColourId));
+    
+    g.setColour(Colours::white);
+    g.setFont(15.0f);
+    
+    g.drawFittedText("Track",10,70,200,30,Justification::centred,1);
+    g.drawFittedText("Order",220,70,200,30,Justification::centred,1);
 }
-void ApresMidiAudioProcessorEditor::buttonClicked(Button* button)
-{
-    if (button == &loadButton)
-        loadButtonClicked();
-};
 
-void ApresMidiAudioProcessorEditor::loadButtonClicked()
-{
-    FileChooser chooser ("Load a MIDI file",
-                         {},
-                         "*.mid");
-    if (chooser.browseForFileToOpen())
-    {
-        File file = chooser.getResult();
-        
-        processor.m1.is_ready = 0;
-        processor.m1.reset();
-        processor.m1.read_midi_file((const char *)file.getFullPathName().toUTF8());
-        processor.m1.is_ready = 1;
-    }
-}
 void ApresMidiAudioProcessorEditor::resized()
 {
-	// This is generally where you'll want to lay out the positions of any
-	// subcomponents in your editor..
+    // This is generally where you'll want to lay out the positions of any
+    // subcomponents in your editor..
 }
