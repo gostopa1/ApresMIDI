@@ -142,8 +142,8 @@ public:
         
         p1.addRoundedRectangle(offset*getWidth(),offset*getHeight(),(1-2*offset)*getWidth(),(1-2*offset)*getHeight(),rounding);
         
-        g.setColour(Colours::darkblue);
-        g.fillPath(p1);
+        //g.setColour(Colours::darkblue);
+        //g.fillPath(p1);
         addAndMakeVisible(speed_slider);
         speed_slider.setBounds(4*offset*getWidth(),offset*getHeight(),(1-2*4*offset)*getWidth(),(1-2*offset)*getHeight());
     };
@@ -161,7 +161,7 @@ public:
     {
         processor = proc;
         addAndMakeVisible(speed_slider);
-        speed_slider.setRange(1, 200, 1);
+        speed_slider.setRange(1, 1000, 1);
         speed_slider.setValue(processor->m1.speed);
         speed_slider.onValueChange = [this] {processor->m1.speed = speed_slider.getValue(); };
         addAndMakeVisible(speed_slider);
@@ -175,8 +175,8 @@ public:
         
         p1.addRoundedRectangle(offset*getWidth(),offset*getHeight(),(1-2*offset)*getWidth(),(1-2*offset)*getHeight(),rounding);
         
-        g.setColour(Colours::darkblue);
-        g.fillPath(p1);
+        //g.setColour(Colours::darkblue);
+        //g.fillPath(p1);
         speed_slider.setBounds(4*offset*getWidth(),offset*getHeight(),(1-2*4*offset)*getWidth(),(1-2*offset)*getHeight());
         g.setColour(Colours::white);
         
