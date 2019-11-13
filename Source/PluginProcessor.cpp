@@ -162,29 +162,7 @@ void ApresMidiAudioProcessor::processBlock(AudioBuffer<float>& buffer, MidiBuffe
         {
             for (int sample = 0; sample < buffer.getNumSamples(); ++sample)
             {
-                if (m1.is_ready)
-                {
-                    
-                    float offset = 100.0f;
-                    
-                    //if ((timer++) > ((int)(gap/m1.durations[m1.cur_pattern])))
-                    
-                    if ((timer++) > ((int)gap))
-                    {
-                        m1.choose_next_pattern();
-                        
-                        for (int notei = 0; notei < m1.unique_patterns[m1.previous_pattern].size(); ++notei)
-                        {
-                            midiMessages.addEvent(MidiMessage::noteOff(1, m1.unique_patterns[m1.previous_pattern][notei], (uint8)0), offset);
-                        }
-                        for (int notei = 0; notei < m1.unique_patterns[m1.cur_pattern].size(); ++notei)
-                        {
-                            midiMessages.addEvent(MidiMessage::noteOn(1, m1.unique_patterns[m1.cur_pattern][notei], (uint8)m1.velocity), offset);
-                        }
-                        timer = 0;
-                    }
-                    gap = m1.duration * m1.speed;
-                }
+                m1.process(midiMessages);
             }
         }
     }
