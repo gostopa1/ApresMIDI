@@ -102,6 +102,7 @@ void ApresMidiAudioProcessorEditor::paint(Graphics& g)
     
     g.drawFittedText("Track",10,70,200,30,Justification::centred,1);
     g.drawFittedText("Order",220,70,200,30,Justification::centred,1);
+    g.drawFittedText("by Athanasios Gotsopoulos (c) 2019",250,480,250,20,Justification::centredRight,1);
 }
 
 void ApresMidiAudioProcessorEditor::resized()
